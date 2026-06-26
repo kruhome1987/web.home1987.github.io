@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="th" class="h-full bg-slate-50 dark:bg-slate-900">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ยินดีต้อนรับ | เว็บไซต์รวมลิงก์ที่น่าสนใจ</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sarabun: ['Sarabun', 'sans-serif'],
+          },
+          colors: {
+            primary: {
+              50: '#f5f7ff',
+              100: '#ebf0ff',
+              200: '#d6e0ff',
+              300: '#b3c7ff',
+              400: '#85a3ff',
+              500: '#5275ff',
+              600: '#2b4cff',
+              700: '#1431eb',
+              800: '#0f27c2',
+              900: '#132499',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts: Sarabun -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+  <!-- SweetAlert2 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Sarabun', sans-serif;
+    }
+    .glass-effect {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .dark .glass-effect {
+      background: rgba(15, 23, 42, 0.85);
+    }
+    .custom-gradient {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    }
+    .card-zoom:hover .card-zoom-image {
+      transform: scale(1.08);
+    }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800 dark:text-slate-100 transition-colors duration-300">
+
+  <!-- Header Banner -->
+  <header class="relative overflow-hidden text-white bg-slate-900 pb-20 pt-8">
+    <!-- Background patterns -->
+    <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop');"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/80 to-slate-900"></div>
+    
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm mb-6 animate-pulse">
+        <i class="fa-solid fa-sparkles text-amber-400"></i>
+        <span>ยินดีต้อนรับสู่แหล่งรวบรวมผลงาน</span>
+      </div>
+      
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4 drop-shadow-sm">
+        ยินดีต้อนรับ โปรดคลิกลิงก์ที่คุณสนใจ
+      </h1>
+      
+      <p class="text-lg text-slate-300 max-w-2xl mx-auto mb-8 font-light">
+        รวมเว็บไซต์และผลงานคุณภาพที่พัฒนาขึ้นมาเพื่อการเรียนรู้และนำไปใช้งานจริง คุณสามารถเลือกชมและเข้าใช้งานเว็บไซต์ต่างๆ ได้ทันทีจากรายการการ์ดด้านล่างนี้
+      </p>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 -mt-16 pb-16 relative z-20">
+    <!-- Navbar / Control Card -->
+    <div class="glass-effect rounded-3xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="h-10 w-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500">
+          <i class="fa-solid fa-list-check text-xl"></i>
+        </div>
+        <div>
+          <h2 class="font-bold text-lg text-slate-800 dark:text-slate-100">รายการเว็บไซต์ทั้งหมด</h2>
+          <p class="text-xs text-slate-500 dark:text-slate-400" id="total-count-label">พบทั้งหมด 0 เว็บไซต์</p>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-lg mx-auto">
+        <button onclick="fetchLinks(true)" class="flex items-center justify-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 py-3 rounded-2xl font-medium shadow-lg hover:shadow-indigo-500/20 transform hover:-translate-y-0.5 active:translate-y-0 transition-all duration-150 w-full sm:w-auto">
+          <span>📥 โหลดข้อมูลจาก Google Sheet</span>
+        </button>
+      </div>
+
+      <div id="banner-mock" class="hidden flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 px-4 py-2 rounded-xl text-sm">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>ระบบใช้ <strong>ข้อมูลจำลอง (Mock Data)</strong> เนื่องจากยังเชื่อมต่อ Google Sheet ไม่สำเร็จ</span>
+      </div>
+
+      <div class="flex items-center gap-3 w-full md:w-auto justify-end flex-wrap">
+        
+        <div class="flex items-center gap-2 mr-2">
+          <div class="relative flex h-3.5 w-3.5">
+            <span id="status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-amber-400"></span>
+            <span id="status-dot" class="relative inline-flex rounded-full h-3.5 w-3.5 bg-amber-500"></span>
+          </div>
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-200">
+            สถานะ Sheet: <span id="status-text" class="font-bold text-amber-500">กำลังโหลด...</span>
+          </span>
+        </div>
+
+        <button id="btn-add-link" onclick="openAddLinkModal()" class="hidden items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-5 py-2.5 rounded-2xl text-sm font-semibold shadow-md hover:shadow-emerald-500/20 transition-all">
+          <i class="fa-solid fa-plus"></i>
+          <span>➕ เพิ่มเว็บไซต์</span>
+        </button>
+
+        <button id="btn-admin-auth" onclick="toggleAdminAuth()" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white px-5 py-2.5 rounded-2xl text-sm font-semibold shadow-md transition-all">
+          <i class="fa-solid fa-lock" id="btn-admin-icon"></i>
+          <span id="btn-admin-text">เข้าสู่ระบบผู้ดูแล (Admin)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[400px]">
+      <!-- Cards will be inserted here dynamically -->
+      <!-- Loading placeholders -->
+      <div class="animate-pulse bg-white dark:bg-slate-800 rounded-2xl h-80 shadow-md"></div>
+      <div class="animate-pulse bg-white dark:bg-slate-800 rounded-2xl h-80 shadow-md"></div>
+      <div class="animate-pulse bg-white dark:bg-slate-800 rounded-2xl h-80 shadow-md"></div>
+      <div class="animate-pulse bg-white dark:bg-slate-800 rounded-2xl h-80 shadow-md"></div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="mt-12 flex justify-center">
+      <nav id="pagination" class="inline-flex items-center gap-1.5 bg-white dark:bg-slate-800 px-4 py-2.5 rounded-full shadow-lg border border-slate-200/50 dark:border-slate-700/50">
+        <!-- Pagination items will be inserted here dynamically -->
+      </nav>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 border-t border-slate-800 py-10 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+      <div class="text-slate-400 text-sm">
+        <p>© 2026 | ผู้พัฒนา ว่าที่ร้อยตรีบุญโฮม ตรองติรัมย์</p>
+      </div>
+      <div class="flex items-center gap-3 text-slate-500 text-xs">
+        <span>Spreadsheet ID: 1mmSXf1P6Zb...sttsg</span>
+        <span>•</span>
+        <button onclick="clearCacheAndReload()" class="hover:text-white transition-colors">
+          <i class="fa-solid fa-rotate-right mr-1"></i>ล้างประวัติจำลอง
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // การตั้งค่า API และรหัสผ่าน
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyB1nPZqc1HwYIi8KoQPFcb8fpLyPXQuvokuIJa2AXvsQBH7AitszCpGqjzkIHv9g9Yxg/exec";
+    
+    // ข้อมูลเริ่มต้นสำหรับระบบจำลอง (Mock Data) หากสคริปต์ใช้งานไม่ได้
+    const DEFAULT_MOCK_LINKS = [
+      {
+        id: "mock_1",
+        title: "Google Thailand",
+        url: "https://www.google.co.th",
+        description: "ระบบสืบค้นข้อมูลระดับโลก ค้นหาทุกสิ่งที่คุณต้องการได้อย่างรวดเร็วและแม่นยำ",
+        imageUrl: "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_2",
+        title: "YouTube",
+        url: "https://www.youtube.com",
+        description: "แพลตฟอร์มแชร์วิดีโอออนไลน์อันดับหนึ่ง รับชมสื่อบันเทิง ความรู้ และเพลงจากทั่วทุกมุมโลก",
+        imageUrl: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_3",
+        title: "GitHub",
+        url: "https://github.com",
+        description: "พื้นที่เก็บซอร์สโค้ดและช่วยในการทำงานร่วมกันของนักพัฒนาโปรแกรมทั่วโลก",
+        imageUrl: "https://images.unsplash.com/photo-1618401471353-b98aedd07871?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_4",
+        title: "Canva Design",
+        url: "https://www.canva.com",
+        description: "สร้างงานออกแบบกราฟิก สไลด์นำเสนอ โปสเตอร์ และวิดีโอสั้น ได้ง่ายและสวยงามแบบมืออาชีพ",
+        imageUrl: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_5",
+        title: "Wikipedia Thai",
+        url: "https://th.wikipedia.org",
+        description: "สารานุกรมเสรีภาษาไทยที่ทุกคนสามารถเข้าไปค้นหาและร่วมแก้ไขบทความวิชาการได้",
+        imageUrl: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_6",
+        title: "Pantip Community",
+        url: "https://pantip.com",
+        description: "คอมมูนิตี้บอร์ดสนทนาภาษาไทยขนาดใหญ่ แหล่งแลกเปลี่ยนความคิดเห็น รีวิว และตอบข้อสงสัยยอดนิยม",
+        imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_7",
+        title: "Sanook News",
+        url: "https://www.sanook.com",
+        description: "พอร์ทัลเว็บไซต์อันดับต้นๆ ของไทย อัปเดตข่าวสารประจำวัน บันเทิง ตรวจหวย และสาระต่างๆ",
+        imageUrl: "https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_8",
+        title: "Tailwind CSS Docs",
+        url: "https://tailwindcss.com",
+        description: "คู่มืออ้างอิงการใช้งาน Tailwind CSS ซึ่งเป็น Utility-first CSS framework สำหรับเว็บดีไซน์สมัยใหม่",
+        imageUrl: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_9",
+        title: "ChatGPT (OpenAI)",
+        url: "https://chat.openai.com",
+        description: "โมเดลปัญญาประดิษฐ์แชทบอทสุดอัจฉริยะ ช่วยคิดงาน เขียนโปรแกรม สรุปความ และเขียนบทความภาษาไทย",
+        imageUrl: "https://images.unsplash.com/photo-1677442136019-21780efad99a?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_10",
+        title: "W3Schools Learn",
+        url: "https://www.w3schools.com",
+        description: "เว็บไซต์สำหรับเรียนรู้การเขียนโค้ดและพัฒนาเว็บไซต์ขั้นพื้นฐาน ได้แก่ HTML, CSS, JavaScript, SQL",
+        imageUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_11",
+        title: "Unsplash Photos",
+        url: "https://unsplash.com",
+        description: "แหล่งรวมภาพถ่ายความละเอียดสูงคุณภาพเยี่ยม ฟรีลิขสิทธิ์ สามารถนำไปประกอบโปรเจกต์ได้ตามต้องการ",
+        imageUrl: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: "mock_12",
+        title: "MDN Web Docs",
+        url: "https://developer.mozilla.org",
+        description: "คู่มือการพัฒนาเว็บมาตรฐานโลกที่จัดทำโดย Mozilla ให้ข้อมูลการพัฒนาฝั่ง Frontend อย่างครอบคลุม",
+        imageUrl: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?q=80&w=600&auto=format&fit=crop",
+        createdAt: new Date().toISOString()
+      }
+    ];
+
+    // สถานะหลักของแอปพลิเคชัน
+    let links = [];
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    let isAdmin = false;
+    let connectionStatus = "loading"; // loading, online, offline, mock
+    let adminPassword = "";
+
+    // เมื่อเริ่มดาวน์โหลดหน้าเว็บ
+    window.addEventListener('DOMContentLoaded', () => {
+      checkAdminSession();
+      fetchLinks();
+    });
+
+    // ตรวจสอบเซสชันผู้ดูแลระบบจาก localStorage
+    function checkAdminSession() {
+      const savedAdmin = localStorage.getItem('webdir_admin');
+      const savedPass = localStorage.getItem('webdir_pass');
+      if (savedAdmin === 'true' && savedPass) {
+        isAdmin = true;
+        adminPassword = savedPass;
+        updateAdminUI();
+      }
+    }
+
+    // ดึงข้อมูลลิงก์
+    function fetchLinks(manualClick = false) {
+      updateConnectionStatus("loading");
+      
+      if (manualClick) {
+        Swal.fire({
+          title: 'กำลังดึงข้อมูล...',
+          text: 'กรุณารอสักครู่ กำลังเรียกข้อมูลจาก Google Sheets',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+      }
+
+      // ตรวจสอบข้อมูลแบบ GET จาก Apps Script
+      fetch(APPS_SCRIPT_URL)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then(res => {
+          if (res.status === "success") {
+            links = res.data;
+            updateConnectionStatus("online");
+            localStorage.setItem('webdir_links_cache', JSON.stringify(links));
+            localStorage.setItem('webdir_is_mock', 'false');
+            
+            if (manualClick) {
+              Swal.fire({
+                icon: 'success',
+                title: 'สำเร็จ!',
+                text: 'ดึงข้อมูลจาก Google Sheet สำเร็จแล้ว',
+                timer: 1500,
+                showConfirmButton: false
+              });
+            }
+            renderApp();
+          } else {
+            throw new Error(res.message || "Unknown error from Apps Script");
+          }
+        })
+        .catch(err => {
+          console.warn("Apps Script API error, fallback to cache or mock data:", err);
+          
+          // ตรวจสอบว่ามี Cache เก่าเก็บไว้หรือไม่
+          const cache = localStorage.getItem('webdir_links_cache');
+          const isMockStorage = localStorage.getItem('webdir_is_mock') === 'true';
+          
+          if (cache && !isMockStorage) {
+            links = JSON.parse(cache);
+            updateConnectionStatus("online"); // หรือแสดงว่าใช้ออฟไลน์ cache
+            if (manualClick) {
+              Swal.fire({
+                icon: 'warning',
+                title: 'ใช้ข้อมูลสำรอง',
+                text: 'ไม่สามารถเชื่อมต่อ Sheet ได้ในขณะนี้ ระบบดึงข้อมูลล่าสุดที่บันทึกไว้ในอุปกรณ์ขึ้นมาแสดง',
+              });
+            }
+          } else {
+            // โหลด Mock Data
+            loadMockData();
+            if (manualClick) {
+              Swal.fire({
+                icon: 'info',
+                title: 'โหลดข้อมูลจำลองสำเร็จ',
+                text: 'เนื่องจากสคริปต์ยังไม่ได้กำหนดฟังก์ชันหรือเชื่อมต่อขัดข้อง ระบบจะแสดงข้อมูลตัวอย่างเพื่อให้คุณทดลองเล่น',
+              });
+            }
+          }
+          renderApp();
+        });
+    }
+
+    // โหลดข้อมูลจำลอง
+    function loadMockData() {
+      updateConnectionStatus("mock");
+      const localMockLinks = localStorage.getItem('webdir_mock_links');
+      if (localMockLinks) {
+        links = JSON.parse(localMockLinks);
+      } else {
+        links = [...DEFAULT_MOCK_LINKS];
+        localStorage.setItem('webdir_mock_links', JSON.stringify(links));
+      }
+      localStorage.setItem('webdir_is_mock', 'true');
+    }
+
+    // บันทึก Mock Data ลง LocalStorage เมื่อมีการอัปเดต
+    function saveMockLinksToStorage() {
+      if (connectionStatus === "mock") {
+        localStorage.setItem('webdir_mock_links', JSON.stringify(links));
+      }
+    }
+
+    // ล้างประวัติจำลองและรีเฟรชหน้าใหม่
+    function clearCacheAndReload() {
+      localStorage.removeItem('webdir_mock_links');
+      localStorage.removeItem('webdir_links_cache');
+      localStorage.removeItem('webdir_is_mock');
+      Swal.fire({
+        icon: 'success',
+        title: 'ล้างข้อมูลสำเร็จ',
+        text: 'กำลังรีโหลดหน้าเว็บเพื่อตั้งต้นใหม่',
+        timer: 1500,
+        showConfirmButton: false,
+        didClose: () => {
+          location.reload();
+        }
+      });
+    }
+
+    // อัปเดตตัวแสดงสถานะ Google Sheet
+    function updateConnectionStatus(status) {
+      connectionStatus = status;
+      const statusDot = document.getElementById('status-dot');
+      const statusPing = document.getElementById('status-ping');
+      const statusText = document.getElementById('status-text');
+      const bannerMock = document.getElementById('banner-mock');
+
+      statusPing.className = "animate-ping absolute inline-flex h-full w-full rounded-full opacity-75";
+      statusDot.className = "relative inline-flex rounded-full h-3.5 w-3.5";
+
+      if (status === "loading") {
+        statusPing.classList.add("bg-amber-400");
+        statusDot.classList.add("bg-amber-500");
+        statusText.innerText = "กำลังโหลด...";
+        statusText.className = "font-bold text-amber-400";
+        bannerMock.classList.add("hidden");
+      } else if (status === "online") {
+        statusPing.classList.add("bg-emerald-400");
+        statusDot.classList.add("bg-emerald-500");
+        statusText.innerText = "ออนไลน์ (Online)";
+        statusText.className = "font-bold text-emerald-400";
+        bannerMock.classList.add("hidden");
+      } else if (status === "mock") {
+        statusPing.classList.add("bg-amber-400");
+        statusDot.classList.add("bg-amber-500");
+        statusText.innerText = "โหมดข้อมูลจำลอง";
+        statusText.className = "font-bold text-amber-500";
+        bannerMock.classList.remove("hidden");
+      } else { // offline
+        statusPing.classList.add("bg-rose-400");
+        statusDot.classList.add("bg-rose-500");
+        statusText.innerText = "ออฟไลน์ (Offline)";
+        statusText.className = "font-bold text-rose-500";
+        bannerMock.classList.add("hidden");
+      }
+    }
+
+    // เรนเดอร์การ์ดและปุ่มเลือกหน้า
+    function renderApp() {
+      document.getElementById('total-count-label').innerText = `พบทั้งหมด ${links.length} เว็บไซต์`;
+      renderCards();
+      renderPagination();
+    }
+
+    // สุ่มสีพื้นหลัง gradient สำหรับการ์ดที่ไม่มีรูปภาพประกอบ
+    function generateGradientFromString(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const colors = [
+        ['from-blue-500', 'to-cyan-500'],
+        ['from-purple-500', 'to-indigo-500'],
+        ['from-pink-500', 'to-rose-500'],
+        ['from-orange-500', 'to-amber-500'],
+        ['from-emerald-500', 'to-teal-500'],
+        ['from-indigo-500', 'to-purple-500']
+      ];
+      const index = Math.abs(hash) % colors.length;
+      return colors[index];
+    }
+
+    // ฟังก์ชันแปลงลิงก์ Google Drive ให้เป็น direct link สำหรับแสดงในแท็ก img
+    function convertDriveUrl(url) {
+      if (!url) return url;
+      
+      // รูปแบบที่ 1: drive.google.com/file/d/FILE_ID/view...
+      const fileDMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (fileDMatch && fileDMatch[1]) {
+        return `https://lh3.googleusercontent.com/d/${fileDMatch[1]}`;
+      }
+      
+      // รูปแบบที่ 2: drive.google.com/open?id=FILE_ID
+      const openIdMatch = url.match(/[\?&]id=([a-zA-Z0-9_-]+)/);
+      if (url.includes('drive.google.com') && openIdMatch && openIdMatch[1]) {
+        return `https://lh3.googleusercontent.com/d/${openIdMatch[1]}`;
+      }
+      
+      // รูปแบบที่ 3: docs.google.com/file/d/FILE_ID...
+      const docsDMatch = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+      if (url.includes('docs.google.com') && docsDMatch && docsDMatch[1]) {
+        return `https://lh3.googleusercontent.com/d/${docsDMatch[1]}`;
+      }
+
+      return url;
+    }
+
+    // วาดการ์ด
+    function renderCards() {
+      const container = document.getElementById('cards-container');
+      container.innerHTML = "";
+
+      if (links.length === 0) {
+        container.className = "flex flex-col items-center justify-center col-span-full py-12 text-slate-400";
+        container.innerHTML = `
+          <i class="fa-regular fa-folder-open text-5xl mb-4"></i>
+          <p class="text-lg">ยังไม่มีข้อมูลเว็บไซต์ในระบบ</p>
+          ${isAdmin ? '<p class="text-sm mt-1">สามารถกดปุ่ม "เพิ่มเว็บไซต์" เพื่อเริ่มต้นสร้างการ์ดลิงก์ใหม่ได้ทันที</p>' : ''}
+        `;
+        return;
+      }
+
+      container.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[300px]";
+
+      // คำนวณขอบเขตข้อมูลที่จะแสดงในหน้านี้
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const paginatedItems = links.slice(startIndex, endIndex);
+
+      paginatedItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = "group relative bg-white dark:bg-slate-800 rounded-3xl shadow-md border border-slate-200/40 dark:border-slate-700/40 overflow-hidden transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 flex flex-col h-full card-zoom";
+
+        // ตรวจสอบภาพ ถ้าไม่มีให้เจนสี gradient สวยๆ แทน
+        let imageHTML = "";
+        if (item.imageUrl && item.imageUrl.trim() !== "" && item.imageUrl.startsWith("http")) {
+          const finalImageUrl = convertDriveUrl(item.imageUrl);
+          imageHTML = `<img src="${finalImageUrl}" class="w-full h-full object-cover transition-transform duration-500 card-zoom-image" alt="${item.title}" onerror="this.onerror=null; this.parentElement.innerHTML=getFallbackGradientHTML('${item.title}')">`;
+        } else {
+          imageHTML = getFallbackGradientHTML(item.title);
+        }
+
+        card.innerHTML = `
+          <!-- Image Section -->
+          <div class="relative w-full h-44 overflow-hidden bg-slate-100 dark:bg-slate-900 border-b border-slate-200/30 dark:border-slate-800/30">
+            ${imageHTML}
+            <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/20"></div>
+            
+            <!-- Quick Badge -->
+            <div class="absolute top-4 left-4 bg-slate-900/60 backdrop-blur-md text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border border-white/10">
+              <i class="fa-solid fa-link mr-1"></i>Link
+            </div>
+            
+            <!-- Admin Delete Button -->
+            ${isAdmin ? `
+              <button onclick="confirmDeleteLink('${item.id}', '${item.title}')" class="absolute top-3.5 right-3.5 bg-rose-500 hover:bg-rose-600 text-white rounded-full h-8 w-8 flex items-center justify-center shadow-lg transform active:scale-90 transition-all z-30" title="ลบการ์ดนี้">
+                <i class="fa-solid fa-trash-can text-sm"></i>
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Card Info Section -->
+          <div class="p-5 flex flex-col flex-grow">
+            <h3 class="font-bold text-slate-800 dark:text-slate-100 text-lg line-clamp-1 mb-2 group-hover:text-indigo-500 transition-colors" title="${item.title}">
+              ${item.title}
+            </h3>
+            
+            <p class="text-sm text-slate-500 dark:text-slate-400 line-clamp-3 mb-5 flex-grow font-light">
+              ${item.description || 'ไม่มีคำอธิบายสำหรับเว็บไซต์นี้'}
+            </p>
+
+            <!-- Visit Button -->
+            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="mt-auto flex items-center justify-center gap-2 w-full py-2.5 rounded-2xl text-white font-medium text-sm custom-gradient hover:shadow-lg hover:shadow-indigo-500/25 active:scale-[0.98] transition-all transform duration-150">
+              <span>เยี่ยมชมเว็บไซต์</span>
+              <i class="fa-solid fa-circle-arrow-right text-xs"></i>
+            </a>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+
+    // ฟังก์ชันสร้างหน้าตา gradient กรณีไม่ใส่รูปภาพ
+    function getFallbackGradientHTML(title) {
+      const gradient = generateGradientFromString(title);
+      const firstLetter = title.charAt(0).toUpperCase();
+      return `
+        <div class="w-full h-full bg-gradient-to-br ${gradient[0]} ${gradient[1]} flex flex-col items-center justify-center text-white">
+          <span class="text-4xl font-extrabold tracking-widest drop-shadow">${firstLetter}</span>
+        </div>
+      `;
+    }
+
+    // วาดการแบ่งหน้า
+    function renderPagination() {
+      const paginationContainer = document.getElementById('pagination');
+      paginationContainer.innerHTML = "";
+
+      const totalPages = Math.ceil(links.length / itemsPerPage);
+      if (totalPages <= 1) {
+        paginationContainer.parentElement.classList.add('hidden');
+        return;
+      }
+      paginationContainer.parentElement.classList.remove('hidden');
+
+      // ปุ่มย้อนกลับ (Previous)
+      const prevBtn = document.createElement('button');
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.className = `h-9 w-9 rounded-full flex items-center justify-center text-sm transition-all ${
+        currentPage === 1 
+          ? 'text-slate-300 dark:text-slate-600 cursor-not-allowed' 
+          : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'
+      }`;
+      prevBtn.innerHTML = `<i class="fa-solid fa-chevron-left text-xs"></i>`;
+      prevBtn.onclick = () => {
+        if (currentPage > 1) {
+          currentPage--;
+          renderApp();
+          window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+      };
+      paginationContainer.appendChild(prevBtn);
+
+      // สร้างเลขหน้า
+      for (let i = 1; i <= totalPages; i++) {
+        const pageBtn = document.createElement('button');
+        pageBtn.className = `h-9 min-w-[36px] px-2.5 rounded-full text-xs font-semibold transition-all ${
+          currentPage === i
+            ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md'
+            : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'
+        }`;
+        pageBtn.innerText = i;
+        pageBtn.onclick = () => {
+          currentPage = i;
+          renderApp();
+          window.scrollTo({ top: 300, behavior: 'smooth' });
+        };
+        paginationContainer.appendChild(pageBtn);
+      }
+
+      // ปุ่มถัดไป (Next)
+      const nextBtn = document.createElement('button');
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.className = `h-9 w-9 rounded-full flex items-center justify-center text-sm transition-all ${
+        currentPage === totalPages 
+          ? 'text-slate-300 dark:text-slate-600 cursor-not-allowed' 
+          : 'text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-700'
+      }`;
+      nextBtn.innerHTML = `<i class="fa-solid fa-chevron-right text-xs"></i>`;
+      nextBtn.onclick = () => {
+        if (currentPage < totalPages) {
+          currentPage++;
+          renderApp();
+          window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+      };
+      paginationContainer.appendChild(nextBtn);
+    }
+
+    // สลับสถานะผู้ดูแลระบบ (Login / Logout)
+    function toggleAdminAuth() {
+      if (isAdmin) {
+        // ดำเนินการ Logout
+        Swal.fire({
+          title: 'ออกจากระบบ?',
+          text: "คุณต้องการออกจากระบบการเป็นผู้ดูแลระบบใช่หรือไม่?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#4f46e5',
+          cancelButtonColor: '#f43f5e',
+          confirmButtonText: 'ใช่, ออกจากระบบ',
+          cancelButtonText: 'ยกเลิก'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            isAdmin = false;
+            adminPassword = "";
+            localStorage.removeItem('webdir_admin');
+            localStorage.removeItem('webdir_pass');
+            updateAdminUI();
+            renderApp();
+            
+            Swal.fire({
+              icon: 'success',
+              title: 'ออกจากระบบสำเร็จ',
+              text: 'ออกจากเซสชันผู้ดูแลเรียบร้อยแล้ว',
+              timer: 1500,
+              showConfirmButton: false
+            });
+          }
+        });
+      } else {
+        // ดำเนินการ Login
+        Swal.fire({
+          title: 'เข้าสู่ระบบผู้ดูแลระบบ',
+          text: connectionStatus === "mock" 
+            ? 'ขณะนี้อยู่ในโหมดจำลอง สามารถทดสอบเพิ่ม/ลบได้ด้วยรหัส "admin1234"' 
+            : 'กรุณากรอกรหัสผ่านเพื่อเข้าใช้งานฟังก์ชันจัดการระบบ',
+          input: 'password',
+          inputPlaceholder: 'กรอกรหัสผ่าน (Password)',
+          inputAttributes: {
+            autocapitalize: 'off',
+            autocorrect: 'off'
+          },
+          showCancelButton: true,
+          confirmButtonColor: '#4f46e5',
+          cancelButtonColor: '#64748b',
+          confirmButtonText: 'เข้าสู่ระบบ',
+          cancelButtonText: 'ยกเลิก',
+          inputValidator: (value) => {
+            if (!value) {
+              return 'กรุณากรอกรหัสผ่าน!'
+            }
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const pass = result.value.trim(); // trim กันช่องว่างหน้า-หลัง
+
+            // ตรวจสอบรหัสผ่านทั้งโหมด mock และ online
+            if (pass !== "admin1234") {
+              Swal.fire({
+                icon: 'error',
+                title: 'รหัสผ่านไม่ถูกต้อง',
+                text: 'กรุณาตรวจสอบรหัสผ่านแล้วลองใหม่อีกครั้ง',
+              });
+              return;
+            }
+
+            // รหัสถูกต้อง → เข้าระบบ
+            isAdmin = true;
+            adminPassword = pass;
+            localStorage.setItem('webdir_admin', 'true');
+            localStorage.setItem('webdir_pass', pass);
+            updateAdminUI();
+            renderApp();
+            Swal.fire({
+              icon: 'success',
+              title: 'เข้าสู่ระบบสำเร็จ',
+              text: 'ยินดีต้อนรับผู้ดูแลระบบ!',
+              timer: 1500,
+              showConfirmButton: false
+            });
+          }
+        });
+      }
+    }
+
+    // อัปเดตปุ่มต่างๆ ใน UI ให้เหมาะสมกับสถานะ Admin
+    function updateAdminUI() {
+      const btnAuth = document.getElementById('btn-admin-auth');
+      const btnText = document.getElementById('btn-admin-text');
+      const btnIcon = document.getElementById('btn-admin-icon');
+      const btnAdd = document.getElementById('btn-add-link');
+
+      if (isAdmin) {
+        btnText.innerText = "ออกจากระบบ Admin";
+        btnIcon.className = "fa-solid fa-unlock-keyhole";
+        btnAuth.className = "flex items-center gap-2 bg-rose-600 hover:bg-rose-700 text-white px-5 py-2.5 rounded-2xl text-sm font-semibold shadow-md transition-all";
+        btnAdd.classList.remove('hidden');
+        btnAdd.classList.add('flex');
+      } else {
+        btnText.innerText = "เข้าสู่ระบบผู้ดูแล (Admin)";
+        btnIcon.className = "fa-solid fa-lock";
+        btnAuth.className = "flex items-center gap-2 bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white px-5 py-2.5 rounded-2xl text-sm font-semibold shadow-md transition-all";
+        btnAdd.classList.add('hidden');
+        btnAdd.classList.remove('flex');
+      }
+    }
+
+    // เปิด Modal ฟอร์มเพิ่มเว็บไซต์
+    function openAddLinkModal() {
+      if (!isAdmin) return;
+
+      Swal.fire({
+        title: '➕ เพิ่มเว็บไซต์ใหม่',
+        html: `
+          <div class="text-left">
+            <label class="block text-xs font-semibold text-slate-500 mb-1.5">ชื่อเว็บไซต์ *</label>
+            <input id="swal-input-title" class="swal2-input w-full m-0 mb-4 px-4 py-2 text-sm border rounded-xl" placeholder="เช่น Google Thailand">
+            
+            <label class="block text-xs font-semibold text-slate-500 mb-1.5">ลิงก์ URL ปลายทาง (URL) *</label>
+            <input id="swal-input-url" class="swal2-input w-full m-0 mb-4 px-4 py-2 text-sm border rounded-xl" placeholder="เช่น https://www.google.co.th">
+            
+            <label class="block text-xs font-semibold text-slate-500 mb-1.5">คำอธิบายรายละเอียด</label>
+            <textarea id="swal-input-desc" class="swal2-textarea w-full m-0 mb-4 px-4 py-2 text-sm border rounded-xl h-20" placeholder="คำอธิบายสั้นๆ เกี่ยวกับเว็บไซต์นี้..."></textarea>
+            
+            <label class="block text-xs font-semibold text-slate-500 mb-1.5">ลิงก์ที่อยู่รูปภาพประกอบ (Image URL - ใส่หรือไม่ใส่ก็ได้)</label>
+            <input id="swal-input-img" class="swal2-input w-full m-0 px-4 py-2 text-sm border rounded-xl" placeholder="เช่น https://example.com/logo.png">
+          </div>
+        `,
+        focusConfirm: false,
+        showCancelButton: true,
+        confirmButtonColor: '#10b981',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: '💾 บันทึกข้อมูล',
+        cancelButtonText: 'ยกเลิก',
+        preConfirm: () => {
+          const title = document.getElementById('swal-input-title').value.trim();
+          const url = document.getElementById('swal-input-url').value.trim();
+          const description = document.getElementById('swal-input-desc').value.trim();
+          const imageUrl = document.getElementById('swal-input-img').value.trim();
+
+          if (!title || !url) {
+            Swal.showValidationMessage('กรุณากรอกข้อมูลในช่องที่มีเครื่องหมาย * ให้ครบถ้วน');
+            return false;
+          }
+
+          // การปรับโครงสร้างรูปแบบลิงก์ให้ถูกต้อง
+          let finalUrl = url;
+          if (!finalUrl.startsWith("http://") && !finalUrl.startsWith("https://")) {
+            finalUrl = "https://" + finalUrl;
+          }
+
+          return { title, url: finalUrl, description, imageUrl };
+        }
+      }).then((result) => {
+        if (result.isConfirmed) {
+          saveNewLink(result.value);
+        }
+      });
+    }
+
+    // ฟังก์ชันยิง API บันทึกข้อมูลลิงก์ใหม่
+    function saveNewLink(data) {
+      if (connectionStatus === "mock") {
+        // บันทึกเฉพาะลงใน Local Storage เพื่อให้สามารถจำลองการทำงาน เพิ่ม/ลบ ได้อย่างสมบูรณ์
+        const newMockItem = {
+          id: "mock_" + new Date().getTime(),
+          title: data.title,
+          url: data.url,
+          description: data.description,
+          imageUrl: data.imageUrl,
+          createdAt: new Date().toISOString()
+        };
+        
+        links.unshift(newMockItem); // เพิ่มเข้าที่บนสุด
+        saveMockLinksToStorage();
+        currentPage = 1; // กลับไปหน้าแรกเพื่อดูอันใหม่สุด
+        renderApp();
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'เพิ่มข้อมูลจำลองสำเร็จ',
+          text: 'บันทึกข้อมูลแบบ Offline ในระบบเสมือนเรียบร้อยแล้ว',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } else {
+        // ส่งจริงไปยัง Google Apps Script
+        Swal.fire({
+          title: 'กำลังบันทึกข้อมูล...',
+          text: 'กรุณารอสักครู่ ระบบกำลังส่งข้อมูลไปที่ Google Sheet',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors', // เนื่องจากมีข้อจำกัดเรื่อง CORS ของ Apps Script
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          body: JSON.stringify({
+            action: 'add',
+            password: adminPassword,
+            title: data.title,
+            url: data.url,
+            description: data.description,
+            imageUrl: data.imageUrl
+          })
+        })
+        .then(() => {
+          // ในโหมด 'no-cors' ของ fetch เราจะไม่ได้รับการตอบกลับแบบอ่านค่าได้ 
+          // จึงถือว่าสำเร็จไว้ก่อน แล้วดึงข้อมูลใหม่มาแสดง
+          setTimeout(() => {
+            fetchLinks(false);
+            Swal.fire({
+              icon: 'success',
+              title: 'บันทึกข้อมูลสำเร็จ',
+              text: 'อัปเดตข้อมูลบน Google Sheet เรียบร้อยแล้ว',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          }, 1500); // ดีเลย์สั้นๆ เพื่อรอ Google Sheet อัปเดตข้อมูล
+        })
+        .catch(err => {
+          Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: 'ไม่สามารถบันทึกข้อมูลได้: ' + err.message,
+          });
+        });
+      }
+    }
+
+    // ยืนยันก่อนลบลิงก์
+    function confirmDeleteLink(id, title) {
+      if (!isAdmin) return;
+
+      Swal.fire({
+        title: 'ยืนยันการลบเว็บไซต์?',
+        text: `คุณต้องการลบ "${title}" ใช่หรือไม่? การกระทำนี้ไม่สามารถย้อนกลับได้`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: '❌ ยืนยันลบข้อมูล',
+        cancelButtonText: 'ยกเลิก'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteLink(id);
+        }
+      });
+    }
+
+    // ฟังก์ชันลบลิงก์จากฐานข้อมูล
+    function deleteLink(id) {
+      if (connectionStatus === "mock") {
+        // ลบออฟไลน์
+        links = links.filter(item => item.id !== id);
+        saveMockLinksToStorage();
+        // ปรับหน้าปัจจุบันกรณีข้อมูลหมดหน้าพอดี
+        const maxPage = Math.ceil(links.length / itemsPerPage);
+        if (currentPage > maxPage && maxPage > 0) {
+          currentPage = maxPage;
+        }
+        renderApp();
+
+        Swal.fire({
+          icon: 'success',
+          title: 'ลบข้อมูลสำเร็จ',
+          text: 'ลบข้อมูลแบบจำลองเรียบร้อยแล้ว',
+          timer: 1500,
+          showConfirmButton: false
+        });
+      } else {
+        // ส่งยิงขอลบจริงจาก Google Apps Script
+        Swal.fire({
+          title: 'กำลังลบข้อมูล...',
+          text: 'กรุณารอสักครู่ ระบบกำลังสื่อสารกับ Google Sheet',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
+        fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain'
+          },
+          body: JSON.stringify({
+            action: 'delete',
+            password: adminPassword,
+            id: id
+          })
+        })
+        .then(() => {
+          setTimeout(() => {
+            fetchLinks(false);
+            Swal.fire({
+              icon: 'success',
+              title: 'ลบสำเร็จ',
+              text: 'ลบข้อมูลจาก Google Sheet เรียบร้อยแล้ว',
+              timer: 2000,
+              showConfirmButton: false
+            });
+          }, 1500);
+        })
+        .catch(err => {
+          Swal.fire({
+            icon: 'error',
+            title: 'เกิดข้อผิดพลาด',
+            text: 'ไม่สามารถลบข้อมูลได้: ' + err.message,
+          });
+        });
+      }
+    }
+  </script>
+</body>
+</html>
