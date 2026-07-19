@@ -65,21 +65,20 @@
     }
 
     /* =========================================
-       CSS สำหรับปุ่ม 8. Expand
+       CSS สำหรับปุ่ม Expand
        ========================================= */
     :root {
-        --btn-grad-start: #4f46e5; /* สีน้ำเงินอมม่วงของ Tailwind indigo-600 */
-        --btn-grad-end: #0ea5e9;   /* สีฟ้าของ Tailwind sky-500 */
+        --btn-grad-start: #4f46e5;
+        --btn-grad-end: #0ea5e9;
         --btn-surface: #ffffff;
         --btn-border: #e2e8f0;
         --btn-text-color: #334155;
     }
     
-    /* ทำให้สีปุ่มเข้ากับ Dark Mode ของ Tailwind */
     .dark {
-        --btn-surface: #1e293b; /* slate-800 */
-        --btn-border: #334155;  /* slate-700 */
-        --btn-text-color: #f8fafc; /* slate-50 */
+        --btn-surface: #1e293b;
+        --btn-border: #334155;
+        --btn-text-color: #f8fafc;
     }
 
     .btn {
@@ -118,11 +117,11 @@
         font-size: 0;
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         color: white;
-        white-space: nowrap; /* สำคัญ: ป้องกันข้อความตกบรรทัด */
+        white-space: nowrap;
     }
     
     .btn--expand:hover {
-        width: 16rem; /* ปรับให้กว้างพอสำหรับข้อความภาษาไทยที่ยาว */
+        width: 16rem; 
         border-radius: 999px;
         background: linear-gradient(135deg, var(--btn-grad-start), var(--btn-grad-end));
         border-color: transparent;
@@ -138,15 +137,15 @@
     }
 
     /* =========================================
-       CSS สำหรับปุ่ม 4. Circle Expand (เยี่ยมชมเว็บไซต์)
+       CSS สำหรับปุ่ม Circle Expand (เยี่ยมชมเว็บไซต์)
        ========================================= */
     .btn--circle-expand {
-        width: 100%; /* ปรับให้กว้างเต็มขอบเขตการ์ด */
+        width: 100%;
         height: 2.75rem;
         background: transparent;
         padding: 0;
         justify-content: flex-start;
-        border: 1px solid var(--btn-border); /* กรอบบางๆ ตอนปกติ */
+        border: 1px solid var(--btn-border);
         border-radius: 999px;
         margin-top: auto; 
         text-decoration: none;
@@ -194,7 +193,6 @@
 <body class="flex flex-col min-h-screen text-slate-800 dark:text-slate-100 transition-colors duration-300">
 
   <header class="relative overflow-hidden text-white bg-slate-900 pb-20 pt-8">
-    <!-- Background patterns -->
     <div class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop');"></div>
     <div class="absolute inset-0 bg-gradient-to-b from-slate-900/50 via-slate-900/80 to-slate-900"></div>
     
@@ -215,10 +213,8 @@
   </header>
 
   <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 -mt-16 pb-16 relative z-20">
-    <!-- Navbar / Control Card -->
     <div class="glass-effect rounded-3xl shadow-xl border border-slate-200/50 dark:border-slate-700/50 p-6 mb-8 flex flex-col md:flex-row justify-between items-center gap-4">
       
-      <!-- ส่วนแสดงจำนวนเว็บไซต์ -->
       <div class="flex items-center gap-3">
         <div class="h-10 w-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-500">
           <i class="fa-solid fa-list-check text-xl"></i>
@@ -229,10 +225,8 @@
         </div>
       </div>
 
-      <!-- ส่วนปุ่มโหลดข้อมูลที่เปลี่ยนเป็นแบบ Expand -->
       <div class="flex items-center justify-center mx-auto">
         <button onclick="fetchLinks(true)" type="button" class="btn btn--expand" title="โหลดข้อมูลจาก Google Sheet">
-          <!-- ไอคอนรีเฟรช -->
           <svg class="btn-exp__icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 12v-3a3 3 0 0 1 3 -3h13m-3 -3l3 3l-3 3"/>
             <path d="M20 12v3a3 3 0 0 1 -3 3h-13m3 3l-3 -3l3 -3"/>
@@ -241,15 +235,12 @@
         </button>
       </div>
 
-      <!-- แบนเนอร์แจ้งเตือนข้อมูลจำลอง -->
       <div id="banner-mock" class="hidden flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 px-4 py-2 rounded-xl text-sm">
         <i class="fa-solid fa-circle-exclamation"></i>
         <span>ระบบใช้ <strong>ข้อมูลจำลอง (Mock Data)</strong> เนื่องจากยังเชื่อมต่อ Google Sheet ไม่สำเร็จ</span>
       </div>
 
-      <!-- ส่วนจัดการสถานะและปุ่ม Admin -->
       <div class="flex items-center gap-3 w-full md:w-auto justify-end flex-wrap">
-        
         <div class="flex items-center gap-2 mr-2">
           <div class="relative flex h-3.5 w-3.5">
             <span id="status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-amber-400"></span>
@@ -274,7 +265,6 @@
 
     <!-- Cards Grid -->
     <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 min-h-[400px]">
-      <!-- Loading placeholders -->
       <div class="animate-pulse bg-white dark:bg-slate-800 rounded-2xl h-80 shadow-md"></div>
       <div class="animate-pulse bg-white dark:bg-slate-800 rounded-2xl h-80 shadow-md"></div>
       <div class="animate-pulse bg-white dark:bg-slate-800 rounded-2xl h-80 shadow-md"></div>
@@ -284,22 +274,14 @@
     <!-- Pagination Controls -->
     <div class="mt-12 flex justify-center">
       <nav id="pagination" class="inline-flex items-center gap-1.5 bg-white dark:bg-slate-800 px-4 py-2.5 rounded-full shadow-lg border border-slate-200/50 dark:border-slate-700/50">
-        <!-- Pagination items will be inserted here dynamically -->
       </nav>
     </div>
   </main>
 
   <footer class="bg-slate-900 border-t border-slate-800 py-10 mt-auto">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <div class="text-slate-400 text-sm">
         <p>© 2026 | ผู้พัฒนา ว่าที่ร้อยตรีบุญโฮม ตรองติรัมย์</p>
-      </div>
-      <div class="flex items-center gap-3 text-slate-500 text-xs">
-        <span>Spreadsheet ID: 1mmSXf1P6Zb...sttsg</span>
-        <span>•</span>
-        <button onclick="clearCacheAndReload()" class="hover:text-white transition-colors">
-          <i class="fa-solid fa-rotate-right mr-1"></i>ล้างประวัติจำลอง
-        </button>
       </div>
     </div>
   </footer>
@@ -308,67 +290,17 @@
     // การตั้งค่า API และรหัสผ่าน
     const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyB1nPZqc1HwYIi8KoQPFcb8fpLyPXQuvokuIJa2AXvsQBH7AitszCpGqjzkIHv9g9Yxg/exec";
     
-    // ข้อมูลเริ่มต้นสำหรับระบบจำลอง (Mock Data) หากสคริปต์ใช้งานไม่ได้
-    const DEFAULT_MOCK_LINKS = [
-      {
-        id: "mock_1",
-        title: "Google Thailand",
-        url: "https://www.google.co.th",
-        description: "ระบบสืบค้นข้อมูลระดับโลก ค้นหาทุกสิ่งที่คุณต้องการได้อย่างรวดเร็วและแม่นยำ",
-        imageUrl: "https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?q=80&w=600&auto=format&fit=crop",
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: "mock_2",
-        title: "YouTube",
-        url: "https://www.youtube.com",
-        description: "แพลตฟอร์มแชร์วิดีโอออนไลน์อันดับหนึ่ง รับชมสื่อบันเทิง ความรู้ และเพลงจากทั่วทุกมุมโลก",
-        imageUrl: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?q=80&w=600&auto=format&fit=crop",
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: "mock_3",
-        title: "GitHub",
-        url: "https://github.com",
-        description: "พื้นที่เก็บซอร์สโค้ดและช่วยในการทำงานร่วมกันของนักพัฒนาโปรแกรมทั่วโลก",
-        imageUrl: "https://images.unsplash.com/photo-1618401471353-b98aedd07871?q=80&w=600&auto=format&fit=crop",
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: "mock_4",
-        title: "Canva Design",
-        url: "https://www.canva.com",
-        description: "สร้างงานออกแบบกราฟิก สไลด์นำเสนอ โปสเตอร์ และวิดีโอสั้น ได้ง่ายและสวยงามแบบมืออาชีพ",
-        imageUrl: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=600&auto=format&fit=crop",
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: "mock_5",
-        title: "Wikipedia Thai",
-        url: "https://th.wikipedia.org",
-        description: "สารานุกรมเสรีภาษาไทยที่ทุกคนสามารถเข้าไปค้นหาและร่วมแก้ไขบทความวิชาการได้",
-        imageUrl: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?q=80&w=600&auto=format&fit=crop",
-        createdAt: new Date().toISOString()
-      },
-      {
-        id: "mock_6",
-        title: "Pantip Community",
-        url: "https://pantip.com",
-        description: "คอมมูนิตี้บอร์ดสนทนาภาษาไทยขนาดใหญ่ แหล่งแลกเปลี่ยนความคิดเห็น รีวิว และตอบข้อสงสัยยอดนิยม",
-        imageUrl: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop",
-        createdAt: new Date().toISOString()
-      }
-    ];
+    // ล้างข้อมูลเริ่มต้นสำหรับระบบจำลอง (Mock Data) ออกตามความต้องการ
+    const DEFAULT_MOCK_LINKS = [];
 
     // สถานะหลักของแอปพลิเคชัน
     let links = [];
     let currentPage = 1;
     const itemsPerPage = 10;
     let isAdmin = false;
-    let connectionStatus = "loading"; // loading, online, offline, mock
+    let connectionStatus = "loading"; 
     let adminPassword = "";
 
-    // เมื่อเริ่มดาวน์โหลดหน้าเว็บ
     window.addEventListener('DOMContentLoaded', () => {
       checkAdminSession();
       fetchLinks();
@@ -448,7 +380,7 @@
               Swal.fire({
                 icon: 'info',
                 title: 'โหลดข้อมูลจำลองสำเร็จ',
-                text: 'เนื่องจากสคริปต์ยังไม่ได้กำหนดฟังก์ชันหรือเชื่อมต่อขัดข้อง ระบบจะแสดงข้อมูลตัวอย่างเพื่อให้คุณทดลองเล่น',
+                text: 'ระบบเข้าสู่โหมดออฟไลน์และแสดงข้อมูลสำรอง',
               });
             }
           }
@@ -472,22 +404,6 @@
       if (connectionStatus === "mock") {
         localStorage.setItem('webdir_mock_links', JSON.stringify(links));
       }
-    }
-
-    function clearCacheAndReload() {
-      localStorage.removeItem('webdir_mock_links');
-      localStorage.removeItem('webdir_links_cache');
-      localStorage.removeItem('webdir_is_mock');
-      Swal.fire({
-        icon: 'success',
-        title: 'ล้างข้อมูลสำเร็จ',
-        text: 'กำลังรีโหลดหน้าเว็บเพื่อตั้งต้นใหม่',
-        timer: 1500,
-        showConfirmButton: false,
-        didClose: () => {
-          location.reload();
-        }
-      });
     }
 
     function updateConnectionStatus(status) {
@@ -527,10 +443,38 @@
       }
     }
 
+    // ฟังก์ชันสำหรับจัดการปักหมุด
+    function togglePin(id) {
+      let pinned = JSON.parse(localStorage.getItem('webdir_pinned') || '[]');
+      if (pinned.includes(id)) {
+        pinned = pinned.filter(pId => pId !== id);
+      } else {
+        pinned.push(id);
+      }
+      localStorage.setItem('webdir_pinned', JSON.stringify(pinned));
+      
+      // กลับไปหน้าแรกเมื่อมีการปักหมุด/เลิกปักหมุด
+      currentPage = 1;
+      renderApp();
+    }
+
     function renderApp() {
       document.getElementById('total-count-label').innerText = `พบทั้งหมด ${links.length} เว็บไซต์`;
-      renderCards();
-      renderPagination();
+      
+      // ดึงข้อมูลการปักหมุดจาก Local Storage
+      const pinnedList = JSON.parse(localStorage.getItem('webdir_pinned') || '[]');
+      
+      // สร้าง Array ใหม่ที่ผ่านการเรียงลำดับ (ปักหมุดขึ้นก่อน)
+      const sortedLinks = [...links].sort((a, b) => {
+        const isPinnedA = pinnedList.includes(a.id);
+        const isPinnedB = pinnedList.includes(b.id);
+        if (isPinnedA && !isPinnedB) return -1;
+        if (!isPinnedA && isPinnedB) return 1;
+        return 0; // เรียงตามเดิมหากสถานะปักหมุดเท่ากัน
+      });
+
+      renderCards(sortedLinks, pinnedList);
+      renderPagination(sortedLinks.length);
     }
 
     function generateGradientFromString(str) {
@@ -567,11 +511,12 @@
       return url;
     }
 
-    function renderCards() {
+    // แก้ไขพารามิเตอร์ให้รับข้อมูลที่เรียงลำดับแล้ว
+    function renderCards(displayLinks, pinnedList) {
       const container = document.getElementById('cards-container');
       container.innerHTML = "";
 
-      if (links.length === 0) {
+      if (displayLinks.length === 0) {
         container.className = "flex flex-col items-center justify-center col-span-full py-12 text-slate-400";
         container.innerHTML = `
           <i class="fa-regular fa-folder-open text-5xl mb-4"></i>
@@ -585,9 +530,10 @@
 
       const startIndex = (currentPage - 1) * itemsPerPage;
       const endIndex = startIndex + itemsPerPage;
-      const paginatedItems = links.slice(startIndex, endIndex);
+      const paginatedItems = displayLinks.slice(startIndex, endIndex);
 
       paginatedItems.forEach(item => {
+        const isPinned = pinnedList.includes(item.id);
         const card = document.createElement('div');
         card.className = "group relative bg-white dark:bg-slate-800 rounded-3xl shadow-md border border-slate-200/40 dark:border-slate-700/40 overflow-hidden transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 flex flex-col h-full card-zoom";
 
@@ -599,13 +545,24 @@
           imageHTML = getFallbackGradientHTML(item.title);
         }
 
+        // จัดการตำแหน่งปุ่ม Admin/Pin เพื่อไม่ให้ทับกัน
+        const pinButtonClass = isAdmin ? 'right-14' : 'right-3.5';
+
         card.innerHTML = `
           <div class="relative w-full h-44 overflow-hidden bg-slate-100 dark:bg-slate-900 border-b border-slate-200/30 dark:border-slate-800/30">
             ${imageHTML}
             <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-black/0 to-black/20"></div>
+            
             <div class="absolute top-4 left-4 bg-slate-900/60 backdrop-blur-md text-white text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-full border border-white/10">
               <i class="fa-solid fa-link mr-1"></i>Link
             </div>
+
+            <!-- ปุ่มปักหมุด (Pin Button) -->
+            <button onclick="togglePin('${item.id}')" class="absolute top-3.5 ${pinButtonClass} bg-slate-900/60 hover:bg-slate-800 backdrop-blur-md text-white rounded-full h-8 w-8 flex items-center justify-center shadow-lg transform active:scale-90 transition-all z-30 border ${isPinned ? 'border-amber-400 bg-slate-800' : 'border-white/10'}" title="${isPinned ? 'เลิกปักหมุด' : 'ปักหมุดเว็บไซต์นี้'}">
+              <i class="fa-solid fa-thumbtack ${isPinned ? 'text-amber-400 -rotate-45' : 'text-slate-300'} text-sm transition-transform"></i>
+            </button>
+            
+            <!-- ปุ่ม Admin ลบ -->
             ${isAdmin ? `
               <button onclick="confirmDeleteLink('${item.id}', '${item.title}')" class="absolute top-3.5 right-3.5 bg-rose-500 hover:bg-rose-600 text-white rounded-full h-8 w-8 flex items-center justify-center shadow-lg transform active:scale-90 transition-all z-30" title="ลบการ์ดนี้">
                 <i class="fa-solid fa-trash-can text-sm"></i>
@@ -643,11 +600,12 @@
       `;
     }
 
-    function renderPagination() {
+    // แก้ไขให้รับจำนวนรวมจากข้อมูลที่เรียงแล้ว
+    function renderPagination(totalCount) {
       const paginationContainer = document.getElementById('pagination');
       paginationContainer.innerHTML = "";
 
-      const totalPages = Math.ceil(links.length / itemsPerPage);
+      const totalPages = Math.ceil(totalCount / itemsPerPage);
       if (totalPages <= 1) {
         paginationContainer.parentElement.classList.add('hidden');
         return;
@@ -737,9 +695,7 @@
       } else {
         Swal.fire({
           title: 'เข้าสู่ระบบผู้ดูแลระบบ',
-          text: connectionStatus === "mock" 
-            ? 'ขณะนี้อยู่ในโหมดจำลอง สามารถทดสอบเพิ่ม/ลบได้ด้วยรหัส "admin1234"' 
-            : 'กรุณากรอกรหัสผ่านเพื่อเข้าใช้งานฟังก์ชันจัดการระบบ',
+          text: 'กรุณากรอกรหัสผ่านเพื่อเข้าใช้งานฟังก์ชันจัดการระบบ',
           input: 'password',
           inputPlaceholder: 'กรอกรหัสผ่าน (Password)',
           inputAttributes: {
@@ -877,8 +833,8 @@
         
         Swal.fire({
           icon: 'success',
-          title: 'เพิ่มข้อมูลจำลองสำเร็จ',
-          text: 'บันทึกข้อมูลแบบ Offline ในระบบเสมือนเรียบร้อยแล้ว',
+          title: 'เพิ่มข้อมูลสำเร็จ',
+          text: 'บันทึกข้อมูลในระบบเสมือนเรียบร้อยแล้ว',
           timer: 1500,
           showConfirmButton: false
         });
@@ -951,6 +907,14 @@
     function deleteLink(id) {
       if (connectionStatus === "mock") {
         links = links.filter(item => item.id !== id);
+        
+        // ถ้าลิงก์ที่ถูกลบเคยโดนปักหมุดไว้ ให้เอาออกจาก Local Storage ด้วย
+        let pinnedList = JSON.parse(localStorage.getItem('webdir_pinned') || '[]');
+        if(pinnedList.includes(id)) {
+            pinnedList = pinnedList.filter(pId => pId !== id);
+            localStorage.setItem('webdir_pinned', JSON.stringify(pinnedList));
+        }
+
         saveMockLinksToStorage();
         
         const maxPage = Math.ceil(links.length / itemsPerPage);
@@ -962,7 +926,7 @@
         Swal.fire({
           icon: 'success',
           title: 'ลบข้อมูลสำเร็จ',
-          text: 'ลบข้อมูลแบบจำลองเรียบร้อยแล้ว',
+          text: 'ลบข้อมูลเรียบร้อยแล้ว',
           timer: 1500,
           showConfirmButton: false
         });
